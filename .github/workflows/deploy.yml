@@ -21,22 +21,11 @@ jobs:
       - name: Restaurar dependencias
         run: dotnet restore ControleProcessos/ControleProcessos.csproj
 
-      - name: Publicar aplicacao
+      - name: Publicar e fazer deploy
         shell: pwsh
         run: |
-          dotnet publish ControleProcessos/ControleProcessos.csproj -c Release -o published --self-contained false
-
-      - name: Deploy via Web Deploy
-        shell: pwsh
-        run: |
-          $publishUrl = "https://site70520.siteasp.net:8172/msdeploy.axd?site=site70520"
-          $username   = "site70520"
-          $password   = "hQ#5H9x?3-Te"
-          $siteName   = "site70520"
-
-          $msdeploy = "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-          $source = "contentPath=published"
-          $dest   = "contentPath=$siteName,ComputerName=$publishUrl,UserName=$username,Password=$password,AuthType=Basic,IncludeAcls=False"
-
-          & $msdeploy -verb:sync "-source:$source" "-dest:$dest" -allowUntrusted
-          exit $LASTEXITCODE
+          dotnet publish ControleProcessos/ControleProcessos.csproj `
+            -c Release `
+            -p:PublishProfile=MonsterASP `
+            -p:Password="hQ#5H9x?3-Te" `
+            -p:AllowUntrustedCertificate=True
