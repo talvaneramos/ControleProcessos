@@ -21,13 +21,12 @@ jobs:
       - name: Restaurar dependencias
         run: dotnet restore ControleProcessos/ControleProcessos.csproj
 
-      - name: Publicar e fazer deploy (self-contained win-x64)
+      - name: Publicar e fazer deploy
         shell: pwsh
         run: |
           dotnet publish ControleProcessos/ControleProcessos.csproj `
             -c Release `
-            --self-contained true `
-            -r win-x64 `
+            --self-contained false `
             -p:WebPublishMethod=MSDeploy `
             -p:MSDeployServiceURL=site70520.siteasp.net `
             -p:DeployIisAppPath=site70520 `
