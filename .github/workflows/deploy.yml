@@ -3,7 +3,7 @@ name: Deploy para MonsterASP.NET
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
