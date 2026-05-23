@@ -31,10 +31,10 @@ jobs:
       - name: Deploy via Web Deploy (MSDeploy)
         shell: pwsh
         run: |
-          $publishUrl = "${{site70520.siteasp.net}}"
-          $username   = "${{site70520}}"
-          $password   = "${{hQ#5H9x?3-Te}}"
-          $siteName   = "${{site70520-WebDeploy}}"
+          $publishUrl = "https://site70520.siteasp.net:8172/msdeploy.axd?site=site70520"
+          $username   = "site70520"
+          $password   = "hQ#5H9x?3-Te"
+          $siteName   = "site70520-WebDeploy"
 
           Compress-Archive -Path published\* -DestinationPath published.zip -Force
 
