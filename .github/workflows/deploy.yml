@@ -26,6 +26,12 @@ jobs:
         run: |
           dotnet publish ControleProcessos/ControleProcessos.csproj `
             -c Release `
-            -p:PublishProfile=MonsterASP `
-            -p:Password="hQ#5H9x?3-Te" `
-            -p:AllowUntrustedCertificate=True
+            -p:WebPublishMethod=MSDeploy `
+            -p:MSDeployServiceURL=site70520.siteasp.net `
+            -p:DeployIisAppPath=site70520 `
+            -p:MSDeployPublishMethod=WMSVC `
+            -p:UserName=site70520 `
+            "-p:Password=hQ#5H9x?3-Te" `
+            -p:AllowUntrustedCertificate=True `
+            -p:SkipExtraFilesOnServer=True `
+            --self-contained false
