@@ -1,4 +1,4 @@
-name: Deploy para MonsterASP.NET
+﻿name: Deploy para MonsterASP.NET
 
 on:
   push:
@@ -38,9 +38,12 @@ jobs:
 
           Compress-Archive -Path published\* -DestinationPath published.zip -Force
 
-          & "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" `
-            -verb:sync `
-            -source:package="published.zip" `
-            -dest:auto,ComputerName="$publishUrl",UserName="$username",Password="$password",AuthType="Basic",IncludeAcls="False" `
-            -setParam:name="IIS Web Application Name",value="$siteName" `
-            -allowUntrusted
+          $msdeploy = "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+          $msdeployArgs = @(
+            "-verb:sync",
+            "-source:package=published.zip",
+            "-dest:auto,ComputerName=$publishUrl,UserName=$username,Password=$password,AuthType=Basic,IncludeAcls=False",
+            "-setParam:name=IIS Web Application Name,value=$siteName",
+            "-allowUntrusted"
+          )
+          & $msdeploy @msdeployArgs
