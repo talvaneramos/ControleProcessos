@@ -18,7 +18,8 @@ if (!string.IsNullOrEmpty(databaseUrl))
 {
     var uri = new Uri(databaseUrl);
     var userInfo = uri.UserInfo.Split(':');
-    connectionString = $"Host={uri.Host};Port={uri.Port};" +
+    var dbPort = uri.Port == -1 ? 5432 : uri.Port;
+    connectionString = $"Host={uri.Host};Port={dbPort};" +
                        $"Database={uri.AbsolutePath.TrimStart('/')};" +
                        $"Username={userInfo[0]};Password={userInfo[1]};" +
                        $"SSL Mode=Require;Trust Server Certificate=true";
