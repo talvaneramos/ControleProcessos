@@ -1,4 +1,4 @@
-﻿name: Deploy para MonsterASP.NET
+name: Deploy para MonsterASP.NET
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout do código
+      - name: Checkout do codigo
         uses: actions/checkout@v4
 
       - name: Configurar .NET 8
@@ -18,32 +18,25 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restaurar dependências
+      - name: Restaurar dependencias
         run: dotnet restore ControleProcessos/ControleProcessos.csproj
 
-      - name: Publicar aplicação
+      - name: Publicar aplicacao
+        shell: pwsh
         run: |
-          dotnet publish ControleProcessos/ControleProcessos.csproj `
-            -c Release `
-            -o published `
-            --self-contained false
+          dotnet publish ControleProcessos/ControleProcessos.csproj -c Release -o published --self-contained false
 
-      - name: Deploy via Web Deploy (MSDeploy)
+      - name: Deploy via Web Deploy
         shell: pwsh
         run: |
           $publishUrl = "https://site70520.siteasp.net:8172/msdeploy.axd?site=site70520"
           $username   = "site70520"
           $password   = "hQ#5H9x?3-Te"
-          $siteName   = "site70520-WebDeploy"
 
           Compress-Archive -Path published\* -DestinationPath published.zip -Force
 
           $msdeploy = "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-          $msdeployArgs = @(
-            "-verb:sync",
-            "-source:package=published.zip",
-            "-dest:auto,ComputerName=$publishUrl,UserName=$username,Password=$password,AuthType=Basic,IncludeAcls=False",
-            "-setParam:name=IIS Web Application Name,value=$siteName",
-            "-allowUntrusted"
-          )
-          & $msdeploy @msdeployArgs
+          $dest = "auto,ComputerName=$publishUrl,UserName=$username,Password=$password,AuthType=Basic,IncludeAcls=False"
+
+          & $msdeploy -verb:sync "-source:package=published.zip" "-dest:$dest" -allowUntrusted
+          exit $LASTEXITCODE
