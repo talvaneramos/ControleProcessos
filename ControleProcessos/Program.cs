@@ -71,7 +71,11 @@ builder.Services.AddAuthentication(options =>
 });
 
 var aspnetcorePort = Environment.GetEnvironmentVariable("ASPNETCORE_PORT");
-if (aspnetcorePort == null)
+if (aspnetcorePort != null)
+{
+    builder.WebHost.UseUrls($"http://127.0.0.1:{aspnetcorePort}");
+}
+else
 {
     var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
