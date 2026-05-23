@@ -1,0 +1,7 @@
+.git
+.vs
+.github
+**/*.user
+**/bin/
+**/obj/
+Dockerfile.txt
